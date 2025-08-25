@@ -3,12 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Book Form Step02</title>
+    
 </head>
 
 <body>
+    <h1>도서 등록</h1>
+    <form>
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title">
 
+        <label for="author">저자</label>
+        <input type="text" id="author" name="author">
+
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn">
+
+        <label for="price">가격</label>
+        <input type="text" id="price" name="price">
+
+        <label for="publishDate">출판일</label>
+        <input type="date" id="publishDate" name="publishDate">
+
+        <button type="submit">등록</button>
+        <div class="clear"></div>
+    </form>
+
+    <h2>등록된 도서 목록</h2>
+    <table>
+        <tr>
+            <th>제목</th>
+            <th>저자</th>
+            <th>ISBN</th>
+            <th>가격</th>
+            <th>출판일</th>
+        </tr>
+    </table>
 </body>
 
 </html>

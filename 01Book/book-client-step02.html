@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Form Step02</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        label {
+            display: inline-block;
+            text-align: center;
+            width: 19%;
+            margin: auto 0;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 20px;
+            width: 80%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #3c3fde;
+            color: white;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            float: right;
+        }
+
+        button:hover {
+            background-color: #2d2fa3;
+        }
+
+        table {
+            margin-top: 30px;
+            max-width: 600px;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .clear {
+            clear: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>도서 등록</h1>
+    <form>
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title">
+
+        <label for="author">저자</label>
+        <input type="text" id="author" name="author">
+
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn">
+
+        <label for="price">가격</label>
+        <input type="text" id="price" name="price">
+
+        <label for="publishDate">출판일</label>
+        <input type="date" id="publishDate" name="publishDate">
+
+        <button type="submit">등록</button>
+        <div class="clear"></div>
+    </form>
+
+    <h2>등록된 도서 목록</h2>
+    <table>
+        <tr>
+            <th>제목</th>
+            <th>저자</th>
+            <th>ISBN</th>
+            <th>가격</th>
+            <th>출판일</th>
+        </tr>
+    </table>
+</body>
+
+</html>
