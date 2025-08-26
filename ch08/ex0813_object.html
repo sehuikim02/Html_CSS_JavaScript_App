@@ -83,18 +83,21 @@
         };
     }
     
-    // 도서관 객체
+    // 도서관 객체 (사용자 정의 객체 Object Literal)
     var library = {
-        books: [],
+        // property(변수) key : value (배열)
+        books: [],  // new Arry()
         
-        // 책 추가
+        // 책 추가 key : function() { }
         addBook: function(book) {
+            // 배열에 추가
             this.books.push(book);
             this.showMessage("책이 추가되었습니다: " + book.title);
         },
         
-        // 제목으로 책 검색
+        // 제목으로 책 검색 key: value() { }
         searchByTitle: function(title) {
+            // 검색의 결과를 저장할 배열 변수
             var found = [];
             for(var i = 0; i < this.books.length; i++) {
                 if(this.books[i].title.toLowerCase().indexOf(title.toLowerCase()) !== -1) {
@@ -158,6 +161,8 @@
     
     function addBook() {
         var title = document.getElementById('title').value;
+        console.log(typeof(document.getElementById('title')));
+        console.log(title);
         var author = document.getElementById('author').value;
         var year = parseInt(document.getElementById('year').value);
         var isbn = document.getElementById('isbn').value;
