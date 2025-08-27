@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Form Step04</title>
+    <link rel="stylesheet" type="text/css" href="./css/form.css" />
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>도서 등록</h1>
+        <form id="bookForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="author">저자</label>
+                    <input type="text" id="author" name="author">
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn">
+                </div>
+                <div class="form-group">
+                    <label for="price">가격</label>
+                    <input type="text" id="price" name="price">
+                </div>
+                <div class="form-group">
+                    <label for="publishDate">출판일</label>
+                    <input type="date" id="publishDate" name="publishDate">
+                </div>
+            </div>
+            <button type="submit">등록</button>
+            <div class="clear"></div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <h2>등록된 도서 목록</h2>
+        <table id="bookTable">
+            <thead>
+                <th>제목</th>
+                <th>저자</th>
+                <th>ISBN</th>
+                <th>가격</th>
+                <th>출판일</th>
+            </thead>
+            <tbody id="bookTableBody">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    // 전역변수 
+    const API_BASE_URL = "http://localhost:8080";
+
+    const bookForm = document.getElementById("bookForm");
+    const bookTableBody = document.getElementById("bookTableBody");
+
+    document.addEventListener("DOMContentLoaded", function () {
+      loadBooks();
+    });
+
+    bookForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      console.log("도서 등록 요청 수신 되었음...");
+
+      const formData = new FormData(bookForm);
+      formData.forEach((value, key) => {
+        console.log(`${key} = ${value}`);
+      });
+
+      const bookData = {
+        title: (formData.get("title") || "").trim(),
+        author: (formData.get("author") || "").trim(),
+        isbn: (formData.get("isbn") || "").trim(),
+        price: formData.get("price") ? Number(formData.get("price")) : null,
+        publishDate: formData.get("publishDate") || ""
+      };
+    });
+
+    function loadBooks() {
+      console.log("도서 목록 불러오는 중...");
+    }
+
+  </script>
+</body>
+
+</html>

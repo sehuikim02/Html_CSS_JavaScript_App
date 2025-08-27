@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Form Step02</title>
+    <link rel="stylesheet" type="text/css" href="./css/form.css" />
+</head>
+
+<body>
+    <div class="form-container">
+        <h1>도서 등록</h1>
+        <form>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="author">저자</label>
+                    <input type="text" id="author" name="author">
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn">
+                </div>
+                <div class="form-group">
+                    <label for="price">가격</label>
+                    <input type="text" id="price" name="price">
+                </div>
+                <div class="form-group">
+                    <label for="publishDate">출판일</label>
+                    <input type="date" id="publishDate" name="publishDate">
+                </div>
+            </div>
+            <button type="submit">등록</button>
+            <div class="clear"></div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <h2>등록된 도서 목록</h2>
+        <table>
+            <tr>
+                <th>제목</th>
+                <th>저자</th>
+                <th>ISBN</th>
+                <th>가격</th>
+                <th>출판일</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
