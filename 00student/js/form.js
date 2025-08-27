@@ -1,7 +1,6 @@
 //전역변수
 const API_BASE_URL = "http://localhost:8080";
-
-// 현재 update중인 학생의 ID
+//현재 Update 중인 학생의 ID
 var editingStudentId = null;
 
 //DOM 엘리먼트 가져오기
@@ -9,9 +8,11 @@ const studentForm = document.getElementById("studentForm");
 const studentTableBody = document.getElementById("studentTableBody");
 const submitButton = document.querySelector("button[type='submit']");
 const cancelButton = document.querySelector(".cancel-btn");
+const formErrorSpan = document.getElementById("formError");
 
 //Document Load 이벤트 처리하기
 document.addEventListener("DOMContentLoaded", function () {
+    //resetForm();
     loadStudents();
 });
 //StudentForm 의 Submit 이벤트 처리하기
@@ -47,8 +48,14 @@ studentForm.addEventListener("submit", function (event) {
     //유효한 데이터 출력하기
     console.log(studentData);
 
-    //서버로 Student 등록 요청하기
-    createStudent(studentData);
+    //현재 수정중인 학생Id가 있으면 수정처리
+    if (editingStudentId) {
+        //서버로 Student 수정 요청하기
+        updateStudent(editingStudentId, studentData);
+    } else {
+        //서버로 Student 등록 요청하기
+        createStudent(studentData);
+    }
 
 }); //submit 이벤트
 
@@ -75,21 +82,22 @@ function createStudent(studentData) {
             return response.json();
         })
         .then((result) => {
-            alert("학생이 성공적으로 등록되었습니다!");
+            showSuccess("학생이 성공적으로 등록되었습니다!");
             //입력 Form의 input의 값 초기화
             studentForm.reset();
+            //resetForm();
             //목록 새로 고침
             loadStudents();
         })
         .catch((error) => {
             console.log('Error : ', error);
-            alert(error.message);
+            showError(error.message);
         });
 }//createStudent
 
 //Student 삭제 함수
 function deleteStudent(studentId, studentName) {
-    if (!confirm(`${studentName} 학생을 정말로 삭제하시겠습니까?`)) {
+    if (!confirm(`이름 = ${studentName} 학생을 정말로 삭제하시겠습니까?`)) {
         return;
     }
     console.log('삭제처리 ...');
@@ -109,13 +117,17 @@ function deleteStudent(studentId, studentName) {
                     throw new Error(errorData.message || '학생 삭제에 실패했습니다.')
                 }
             }
-            alert("학생이 성공적으로 삭제되었습니다!");
+            showSuccess("학생이 성공적으로 삭제되었습니다!");
             //목록 새로 고침
             loadStudents();
         })
+        .catch((error) => {
+            console.log('Error : ', error);
+            showError(error.message);
+        });
 }//deleteStudent
 
-// 학생 수정 전에 데이터를 로드하는 함수
+//학생 수정전에 데이터를 로드하는 함수
 function editStudent(studentId) {
     fetch(`${API_BASE_URL}/api/students/${studentId}`)
         .then(async (response) => {
@@ -135,7 +147,7 @@ function editStudent(studentId) {
             studentForm.name.value = student.name;
             studentForm.studentNumber.value = student.studentNumber;
             if (student.detail) {
-                studentForm.address.value = student.detail.address;     // StudentDTO에서 StudentDedail이 detail로 되어있어서, student.detail
+                studentForm.address.value = student.detail.address;
                 studentForm.phoneNumber.value = student.detail.phoneNumber;
                 studentForm.email.value = student.detail.email;
                 studentForm.dateOfBirth.value = student.detail.dateOfBirth || '';
@@ -150,11 +162,62 @@ function editStudent(studentId) {
         })
         .catch((error) => {
             console.log('Error : ', error);
-            alert(error.message);
+            showError(error.message);
         });
 }//editStudent
 
-//입력 항목의 값의 유효성을 체크하는 함수
+//학생 수정을 처리하는 함수
+function updateStudent(studentId, studentData) {
+    fetch(`${API_BASE_URL}/api/students/${studentId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(studentData)  //Object => json
+    })
+        .then(async (response) => {
+            if (!response.ok) {
+                //응답 본문을 읽어서 에러 메시지 추출 
+                //errorData 객체는 서버의 ErrorObject와 매핑이 된다.
+                const errorData = await response.json();
+                //status code와 message를 확인하기
+                if (response.status === 409) {
+                    //중복 오류 처리
+                    throw new Error(`${errorData.message} ( 에러코드: ${errorData.statusCode} )` || '중복 되는 정보가 있습니다.');
+                } else {
+                    //기타 오류 처리
+                    throw new Error(errorData.message || '학생 수정에 실패했습니다.')
+                }
+            }
+            return response.json();
+        })
+        .then((result) => {
+            showSuccess("학생이 성공적으로 수정되었습니다!");
+            //등록모드로 전환
+            resetForm();
+            //목록 새로 고침
+            loadStudents();
+        })
+        .catch((error) => {
+            console.log('Error : ', error);
+            showError(error.message);
+        });
+}//updateStudent
+
+//입력필드 초기화,수정모드에서 등록모드로 전환
+function resetForm() {
+    //form 초기화
+    studentForm.reset();
+    //수정 Mode 설정하는 변수 초기화
+    editingStudentId = null;
+    //submit 버튼의 타이틀을 학생 등록 변경
+    submitButton.textContent = "학생 등록";
+    //cancel 버튼의 사라지게
+    cancelButton.style.display = 'none';
+    //error message 초기화
+    clearMessages();
+}//resetForm
+
+
+//입력항목의 값의 유효성을 체크하는 함수
 function validateStudent(student) {// 필수 필드 검사
     if (!student.name) {
         alert("이름을 입력해주세요.");
@@ -216,16 +279,26 @@ function isValidEmail(email) {
 function loadStudents() {
     console.log("학생 목록 Load 중.....");
     fetch(`${API_BASE_URL}/api/students`) //Promise
-        .then((response) => {
-            // if (!response.ok) {
-            //     throw new Error("<<< 학생 목록을 불러오는데 실패했습니다!. ");
-            // }
+        .then(async (response) => {
+            if (!response.ok) {
+                //응답 본문을 읽어서 에러 메시지 추출
+                const errorData = await response.json();
+                throw new Error(`${errorData.message}`);
+            }
             return response.json();
         })
         .then((students) => renderStudentTable(students))
         .catch((error) => {
             console.log(error);
-            alert(">>> 학생 목록을 불러오는데 실패했습니다!.");
+            //alert(">>> 학생 목록을 불러오는데 실패했습니다!.");
+            showError(error.message);
+            studentTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #dc3545;">
+                        오류: 데이터를 불러올 수 없습니다.
+                    </td>
+                </tr>
+            `;
         });
 };
 
@@ -254,3 +327,20 @@ function renderStudentTable(students) {
         studentTableBody.appendChild(row);
     });
 }//renderStudentTable
+
+//성공 메시지 출력
+function showSuccess(message) {
+    formErrorSpan.textContent = message;
+    formErrorSpan.style.display = 'block';
+    formErrorSpan.style.color = '#28a745';
+}
+//에러 메시지 출력
+function showError(message) {
+    formErrorSpan.textContent = message;
+    formErrorSpan.style.display = 'block';
+    formErrorSpan.style.color = '#dc3545';
+}
+//메시지 초기화
+function clearMessages() {
+    formErrorSpan.style.display = 'none';
+}
