@@ -57,15 +57,15 @@ function createStudent(studentData) {
     // 버튼 비활성화
     submitButton.disabled = true;
     submitButton.textContent = "등록 중...";
-    
+
     fetch(`${API_BASE_URL}/api/students`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(studentData)
     })
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
-                return response.json().then(function(errorData) {
+                return response.json().then(function (errorData) {
                     if (response.status === 409) {
                         throw new Error(errorData.message || '중복되는 정보가 있습니다.');
                     } else {
@@ -75,16 +75,16 @@ function createStudent(studentData) {
             }
             return response.json();
         })
-        .then(function(result) {
+        .then(function (result) {
             showMessage("학생이 성공적으로 등록되었습니다!", "success");
             studentForm.reset();
             loadStudents();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error : ', error);
             showMessage(error.message, "error");
         })
-        .finally(function() {
+        .finally(function () {
             // 버튼 다시 활성화
             submitButton.disabled = false;
             submitButton.textContent = "학생 등록";
@@ -96,15 +96,15 @@ function deleteStudent(studentId, studentName) {
     if (!confirm(`이름 = ${studentName} 학생을 정말로 삭제하시겠습니까?`)) {
         return;
     }
-    
+
     console.log('삭제 처리 중...');
-    
+
     fetch(`${API_BASE_URL}/api/students/${studentId}`, {
         method: 'DELETE'
     })
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
-                return response.json().then(function(errorData) {
+                return response.json().then(function (errorData) {
                     if (response.status === 404) {
                         throw new Error(errorData.message || '존재하지 않는 학생입니다.');
                     } else {
@@ -115,7 +115,7 @@ function deleteStudent(studentId, studentName) {
             showMessage("학생이 성공적으로 삭제되었습니다!", "success");
             loadStudents();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error : ', error);
             showMessage(error.message, "error");
         });
@@ -124,9 +124,9 @@ function deleteStudent(studentId, studentName) {
 //학생 수정전에 데이터를 로드하는 함수
 function editStudent(studentId) {
     fetch(`${API_BASE_URL}/api/students/${studentId}`)
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
-                return response.json().then(function(errorData) {
+                return response.json().then(function (errorData) {
                     if (response.status === 404) {
                         throw new Error(errorData.message || '존재하지 않는 학생입니다.');
                     }
@@ -134,7 +134,7 @@ function editStudent(studentId) {
             }
             return response.json();
         })
-        .then(function(student) {
+        .then(function (student) {
             //Form에 데이터 채우기
             studentForm.name.value = student.name;
             studentForm.studentNumber.value = student.studentNumber;
@@ -149,11 +149,11 @@ function editStudent(studentId) {
             editingStudentId = studentId;
             submitButton.textContent = "학생 수정";
             cancelButton.style.display = 'inline-block';
-            
+
             // 첫 번째 입력 필드에 포커스
             studentForm.name.focus();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error : ', error);
             showMessage(error.message, "error");
         });
@@ -164,15 +164,15 @@ function updateStudent(studentId, studentData) {
     // 버튼 비활성화
     submitButton.disabled = true;
     submitButton.textContent = "수정 중...";
-    
+
     fetch(`${API_BASE_URL}/api/students/${studentId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(studentData)
     })
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
-                return response.json().then(function(errorData) {
+                return response.json().then(function (errorData) {
                     if (response.status === 409) {
                         throw new Error(`${errorData.message} (에러코드: ${errorData.statusCode})` || '중복되는 정보가 있습니다.');
                     } else {
@@ -182,16 +182,16 @@ function updateStudent(studentId, studentData) {
             }
             return response.json();
         })
-        .then(function(result) {
+        .then(function (result) {
             showMessage("학생이 성공적으로 수정되었습니다!", "success");
             resetForm();
             loadStudents();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error : ', error);
             showMessage(error.message, "error");
         })
-        .finally(function() {
+        .finally(function () {
             // 버튼 다시 활성화
             submitButton.disabled = false;
             if (editingStudentId) {
@@ -237,7 +237,7 @@ function validateStudent(student) {
 
     if (student.detailRequest) {
         const studentDetail = student.detailRequest;
-        
+
         // 주소 확인
         if (!studentDetail.address) {
             showMessage("주소를 입력해주세요.", "error");
@@ -286,20 +286,20 @@ function isValidEmail(email) {
 //Student(학생) 목록을 Load 하는 함수
 function loadStudents() {
     console.log("학생 목록 로드 중...");
-    
+
     fetch(`${API_BASE_URL}/api/students`)
-        .then(function(response) {
+        .then(function (response) {
             if (!response.ok) {
-                return response.json().then(function(errorData) {
+                return response.json().then(function (errorData) {
                     throw new Error(errorData.message || '학생 목록을 불러올 수 없습니다.');
                 });
             }
             return response.json();
         })
-        .then(function(students) {
+        .then(function (students) {
             renderStudentTable(students);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log(error);
             showMessage(error.message, "error");
             studentTableBody.innerHTML = `
@@ -316,7 +316,7 @@ function loadStudents() {
 function renderStudentTable(students) {
     console.log(`${students.length}명의 학생 데이터를 표시합니다.`);
     studentTableBody.innerHTML = "";
-    
+
     if (students.length === 0) {
         studentTableBody.innerHTML = `
             <tr>
@@ -328,9 +328,9 @@ function renderStudentTable(students) {
         return;
     }
 
-    students.forEach(function(student) {
+    students.forEach(function (student) {
         const row = document.createElement("tr");
-        
+
         row.innerHTML = `
             <td>${student.name}</td>
             <td>${student.studentNumber}</td>
@@ -343,7 +343,7 @@ function renderStudentTable(students) {
                 <button class="delete-btn" onclick="deleteStudent(${student.id},'${student.name}')">삭제</button>
             </td>
         `;
-        
+
         studentTableBody.appendChild(row);
     });
 }
@@ -351,7 +351,7 @@ function renderStudentTable(students) {
 // 날짜 형식을 보기 좋게 변환
 function formatDate(dateString) {
     if (!dateString) return "-";
-    
+
     try {
         const date = new Date(dateString);
         return date.toLocaleDateString('ko-KR');
@@ -364,7 +364,7 @@ function formatDate(dateString) {
 function showMessage(message, type) {
     formErrorSpan.textContent = message;
     formErrorSpan.style.display = 'block';
-    
+
     if (type === "success") {
         formErrorSpan.style.color = '#28a745';
         formErrorSpan.style.backgroundColor = '#d4edda';
@@ -374,9 +374,9 @@ function showMessage(message, type) {
         formErrorSpan.style.backgroundColor = '#f8d7da';
         formErrorSpan.style.borderColor = '#f5c6cb';
     }
-    
+
     // 3초 후 자동으로 메시지 숨김
-    setTimeout(function() {
+    setTimeout(function () {
         hideMessage();
     }, 3000);
 }
