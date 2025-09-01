@@ -1,24 +1,146 @@
-﻿body {
-    font-family: "맑은 고딕", "돋움", "굴림";               
-    /*
-    background: bg-color bg-image position/bg-size bg-repeat bg-origin bg-clip bg-attachment
-       bg-images : url('../images/bg.jpg') 
-       bg-repeat : no-repeat : 
-       bg-position (배경 위치) : left(가로위치-왼쪽) top(세로위치-상단) : 
-       bg-attachment (배경 고정) : fixed 페이지를 스크롤해도 배경은 움직이지 않음
-    */
-    
-    /*
-    background-size
-    : cover
-        비율 유지하며 요소 전체를 덮음
-        이미지 일부가 잘릴 수 있음
-        풀스크린 배경에 최적
-    : contain
-        비율 유지하며 요소 안에 완전 포함
-        여백이 생길 수 있음
-        로고, 아이콘에 최적
-    */
-    
+﻿/* =========================
+   기본 설정
+   ========================= */
+body {
+    margin: 0;
+    font-family: "맑은 고딕", Arial, sans-serif;
+    background: url("../images/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
 }
 
+/* =========================
+   전체 레이아웃
+   ========================= */
+#wrapper {
+    width: 800px;
+    margin: 50px auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   헤더
+   ========================= */
+header {
+    background: rgba(255, 255, 255, 0.);
+    padding: 20px;
+}
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* =========================
+   네비게이션 메뉴
+   ========================= */
+nav {
+    background: #333;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+nav li {
+    flex: 1;
+    text-align: center;
+}
+nav a {
+    display: block;
+    padding: 12px;
+    color: #fff;
+    text-decoration: none;
+}
+nav a:hover {
+    background: #444;
+}
+nav a.current {
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+}
+
+/* =========================
+   본문
+   ========================= */
+section {
+    background: rgba(255, 255, 255, 0.8);
+    border: 3px solid;
+}
+article {
+    padding: 30px;
+}
+article h2 {
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+article p {
+    line-height: 1.6;
+}
+article img {
+    float: right;
+    margin: 10px;
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+
+/* =========================
+   리스트
+   ========================= */
+article ol {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+article ul {
+    margin: 8px 0 15px 0;
+    padding-left: 20px;
+}
+
+/* =========================
+   테이블 (plan.html)
+   ========================= */
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin: 0 auto;
+}
+caption {
+    caption-side: top;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background: #f4f4f4;
+    text-align: center;
+    width: 80px;
+}
+
+/* =========================
+   푸터
+   ========================= */
+footer {
+    background: #555;
+    color: #eee;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+footer address {
+    font-style: normal;
+    margin-top: 5px;
+    color: #ccc;
+}
