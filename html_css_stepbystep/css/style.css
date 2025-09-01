@@ -62,6 +62,7 @@ nav a.current {
     background: #fff;
     color: #000;
     font-weight: bold;
+    border-radius: 5px 5px 0 0;
 }
 
 /* =========================
@@ -75,6 +76,10 @@ article {
     padding: 30px;
 }
 article h2 {
+    font-size: 25px;
+}
+
+#header_wrapper {
     font-size: 22px;
     margin-top: 0;
     margin-bottom: 15px;
@@ -82,10 +87,13 @@ article h2 {
     align-items: center;
     gap: 8px;
 }
+.iconimg{
+    width: 50px;
+}
 article p {
     line-height: 1.6;
 }
-article img {
+.stringimg {
     float: right;
     margin: 10px;
     border: 1px solid #ccc;
@@ -135,7 +143,7 @@ th {
 footer {
     background: #555;
     color: #eee;
-    text-align: center;
+    text-align: left;
     padding: 15px;
     font-size: 14px;
 }
